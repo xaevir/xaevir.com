@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XÆVIR — Signal Density</title>
+    <style>
+        /* ═══════════════════════════════════════════════════════════
+           MATHEMATICAL FOUNDATION - φ = 1.618
+           ═══════════════════════════════════════════════════════════ */
+        
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --text-dim: #8a8a8a;
+            --accent: #6dcff6;
+            --border: rgba(255, 255, 255, 0.08);
+            
+            /* Fibonacci spacing */
+            --s1: 8px;
+            --s2: 13px;
+            --s3: 21px;
+            --s4: 34px;
+            --s5: 55px;
+            --s6: 89px;
+            --s7: 144px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            font-weight: 300;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           LAYOUT - Clean sections with subtle borders
+           ═══════════════════════════════════════════════════════════ */
+        
+        section {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: var(--s7) var(--s4);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        section:last-of-type {
+            border-bottom: none;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1100px;
+            margin: 0 auto;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           TYPOGRAPHY - Light, elegant hierarchy
+           ═══════════════════════════════════════════════════════════ */
+        
+        .eyebrow {
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            font-weight: 400;
+            margin-bottom: var(--s3);
+        }
+        
+        h1 {
+            font-size: clamp(48px, 7vw, 82px);
+            font-weight: 300;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--s5);
+        }
+        
+        h2 {
+            font-size: clamp(32px, 5vw, 52px);
+            font-weight: 300;
+            line-height: 1.2;
+            letter-spacing: -0.01em;
+            margin-bottom: var(--s4);
+        }
+        
+        .subhead {
+            font-size: 18px;
+            color: var(--text-dim);
+            line-height: 1.6;
+            font-weight: 300;
+            max-width: 65ch;
+            margin-bottom: var(--s6);
+        }
+        
+        p {
+            font-size: 16px;
+            color: var(--text-dim);
+            line-height: 1.7;
+            font-weight: 300;
+            max-width: 65ch;
+        }
+        
+        strong {
+            font-weight: 400;
+            color: var(--text);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           HEADER - Minimal floating nav
+           ═══════════════════════════════════════════════════════════ */
+        
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            backdrop-filter: blur(12px);
+            background: rgba(0, 0, 0, 0.7);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        nav {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: var(--s3) var(--s4);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--s2);
+            text-decoration: none;
+            color: var(--text);
+            font-weight: 300;
+            font-size: 15px;
+            letter-spacing: 0.05em;
+        }
+        
+        .logo svg {
+            width: 28px;
+            height: auto;
+        }
+        
+        .logo svg .cls-1 {
+            fill: var(--accent);
+            stroke: var(--accent);
+            stroke-width: 1;
+            stroke-miterlimit: 10;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           HERO - Maximum elegance
+           ═══════════════════════════════════════════════════════════ */
+        
+        #hero {
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .hero-content {
+            max-width: 900px;
+        }
+        
+        .hero-title {
+            font-size: clamp(52px, 8vw, 96px);
+            font-weight: 300;
+            line-height: 1.05;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--s5);
+        }
+        
+        .hero-subtitle {
+            font-size: 22px;
+            color: var(--text-dim);
+            line-height: 1.5;
+            font-weight: 300;
+            max-width: 45ch;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           VISUAL CONTAINERS - Prominent, elegant
+           ═══════════════════════════════════════════════════════════ */
+        
+        .visual-large {
+            margin-top: var(--s6);
+            margin-bottom: var(--s6);
+        }
+        
+        .visual-medium {
+            margin-top: var(--s5);
+            margin-bottom: var(--s4);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           THRESHOLD VISUALIZATION - Interactive component
+           ═══════════════════════════════════════════════════════════ */
+        
+        .threshold-viz-container {
+            position: relative;
+            max-width: 640px;
+            margin: 0 auto;
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: var(--bg);
+            padding: var(--s4);
+        }
+        
+        .pause-btn {
+            position: absolute;
+            right: 16px;
+            top: 16px;
+            z-index: 10;
+            font-size: 13px;
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            color: #e2e8f0;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background 200ms ease;
+        }
+        
+        .pause-btn:hover {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .viz-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: var(--s4);
+        }
+        
+        .viz-container svg {
+            max-width: 340px;
+        }
+        
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+        
+        @keyframes pulseScale {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.03); }
+        }
+        
+        @keyframes reveal {
+            from { stroke-dashoffset: 222px; }
+            to { stroke-dashoffset: 0; }
+        }
+        
+        .glow-circle {
+            animation: glowPulse 2s ease-in-out infinite;
+            transition: all 800ms ease;
+        }
+        
+        .center-text {
+            animation: pulseScale 2s ease-in-out infinite;
+        }
+        
+        .checkpoint-pulse {
+            animation: pulseScale 2s ease-in-out infinite;
+        }
+        
+        .checklist {
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: var(--s3);
+            border: 1px solid var(--border);
+        }
+        
+        .checklist-header {
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-dim);
+            margin-bottom: var(--s3);
+            font-weight: 600;
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            gap: var(--s2);
+            padding: var(--s2) 0;
+            transition: all 400ms ease;
+        }
+        
+        .checklist-item:not(:last-child) {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .check-circle {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 900;
+            color: var(--bg);
+            flex-shrink: 0;
+        }
+        
+        .check-circle.active {
+            animation: pulseScale 2s ease-in-out infinite;
+        }
+        
+        .check-content {
+            flex: 1;
+        }
+        
+        .check-question {
+            font-size: 15px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+        
+        .check-status {
+            font-size: 12px;
+            color: var(--text-dim);
+        }
+        
+        .check-label {
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+        
+        .result-box {
+            margin-top: var(--s3);
+            padding: var(--s2) var(--s3);
+            border-radius: 8px;
+            font-size: 13px;
+            text-align: center;
+            font-weight: 500;
+            transition: all 400ms ease;
+        }
+        
+        .bottom-indicators {
+            margin-top: var(--s3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--s4);
+            font-size: 11px;
+            color: var(--text-dim);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+        
+        .indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--s1);
+            transition: opacity 400ms ease;
+        }
+        
+        .indicator-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+        
+        .indicator-dot.active {
+            animation: glowPulse 2s ease-in-out infinite;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           SPLIT LAYOUT - Minimal comparison
+           ═══════════════════════════════════════════════════════════ */
+        
+        .split {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--s5);
+            margin-top: var(--s5);
+        }
+        
+        .split-card {
+            padding: var(--s4);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
+        
+        .split-card.highlight {
+            border-color: var(--accent);
+        }
+        
+        .split-label {
+            font-size: 13px;
+            font-weight: 400;
+            margin-bottom: var(--s3);
+            color: var(--text-dim);
+            letter-spacing: 0.05em;
+        }
+        
+        .split-card.highlight .split-label {
+            color: var(--accent);
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           TABLE - Clean data presentation
+           ═══════════════════════════════════════════════════════════ */
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: var(--s5);
+            font-weight: 300;
+        }
+        
+        th {
+            padding: var(--s3);
+            text-align: left;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        td {
+            padding: var(--s4) var(--s3);
+            font-size: 15px;
+            color: var(--text-dim);
+            border-bottom: 1px solid var(--border);
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .highlight-cell {
+            color: var(--accent);
+            font-weight: 400;
+        }
+        
+        /* ═══════════════════════════════════════════════════════════
+           UTILITY
+           ═══════════════════════════════════════════════════════════ */
+        
+        .text-center { text-align: center; }
+        .mt-4 { margin-top: var(--s4); }
+        .mt-5 { margin-top: var(--s5); }
+        .mb-4 { margin-bottom: var(--s4); }
+        .caption { font-size: 13px; color: var(--text-dim); font-style: italic; margin-top: var(--s3); }
+        
+        /* ═══════════════════════════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════════════════════════ */
+        
+        @media (max-width: 768px) {
+            section {
+                padding: var(--s6) var(--s3);
+                min-height: auto;
+            }
+            
+            .split {
+                grid-template-columns: 1fr;
+                gap: var(--s4);
+            }
+            
+            table {
+                font-size: 13px;
+            }
+            
+            th, td {
+                padding: var(--s2);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <nav>
+            <a href="#" class="logo">
+                <svg viewBox="0 0 848.34 986.43">
+                    <defs>
+                        <style>
+                            .cls-1 {
+                                fill: #6dcff6;
+                                stroke: #6dcff6;
+                                stroke-width: 1;
+                                stroke-miterlimit: 10;
+                            }
+                        </style>
+                    </defs>
+                    <polygon class="cls-1" points="567.8 .74 698.54 43.99 727.54 145.76 706.17 161.03 663.93 123.37 668.51 186.98 615.09 224.12 542.34 177.82 615.09 277.04 770.28 160.01 721.43 10.41 567.8 .74"/>
+                    <polygon class="cls-1" points="468.52 141.71 478.72 258.21 310.8 387.46 458.87 656.63 361.18 399.67 537.74 277.04 468.52 141.71"/>
+                    <polygon class="cls-1" points="458.37 594.55 634.42 516.19 683.27 575.72 579.98 909.01 735.68 572.16 654.27 455.64 458.37 594.55"/>
+                    <path class="cls-1" d="M537.74,640.86s-27.99-21.37-41.22,13.23l-66.66,36.13-37.65-39.69,18.83,49.36L54.86,894.25.92,985.84l103.8-9.16,141.46-105.84,25.44-90.06,300.21,43.25-191.32-53.94,50.88-38.16,36.64,37.65-20.35-48.85,61.57-47.83s35.62,6.11,28.49-32.06Z"/>
+                    <polygon class="cls-1" points="640.53 839.81 741.28 825.05 783 781.29 749.42 694.79 847.62 784.86 765.7 867.8 640.53 839.81"/>
+                </svg>
+                <span>XÆVIR</span>
+            </a>
+        </nav>
+    </header>
+
+    <!-- HERO -->
+    <section id="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1 class="hero-title">Precision > Blind Grind</h1>
+                <p class="hero-subtitle">Hours ≠ Output. Traditional training monetizes time, not outcomes. We reverse-engineered the system.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 01: THE ILLUSION -->
+    <section id="illusion">
+        <div class="container">
+            <p class="eyebrow">Insight 01</p>
+            <h2>Everyone Believes Heavier = Bigger</h2>
+            <p class="subhead">Traditional training delivers brief spikes separated by valleys. Most of your time is theater.</p>
+            
+            <p>The final 2 reps before failure carry all adaptive signal. In 3×10 training, that's 6 reps per exercise. Each rep: ~1 second. Everything else is recovery overhead.</p>
+            
+            <p class="mt-4" style="color: var(--text);">The industry optimizes effort. We optimize signal density.</p>
+        </div>
+    </section>
+
+    <!-- 02: THE TRUTH -->
+    <section id="truth">
+        <div class="container">
+            <p class="eyebrow">Insight 02</p>
+            <h2>Muscle Growth is Binary</h2>
+            <p class="subhead">State, not stimulus. Binary outcomes don't care about volume.</p>
+            
+            <p>Forget linear thinking. Muscle adaptation is a state machine: achieve recruitment once, then persist.</p>
+            
+            <p class="mt-4"><strong>Traditional training is threshold gambling.</strong> It bets everything on 2 reps per set—only if weight selection was perfect and execution flawless.</p>
+            
+            <div class="visual-large">
+                <svg viewBox="0 0 540 220" style="width: 100%; height: auto;">
+                    <defs>
+                        <filter id="softGlow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+                            <feMerge>
+                                <feMergeNode in="coloredBlur"/>
+                                <feMergeNode in="SourceGraphic"/>
+                            </feMerge>
+                        </filter>
+                        <clipPath id="clipAbove">
+                            <rect x="0" y="0" width="540" height="80"/>
+                        </clipPath>
+                    </defs>
+                    <text x="460" y="65" font-size="11" fill="#666" font-weight="300">Growth Zone</text>
+                    <line x1="40" y1="80" x2="500" y2="80" stroke="#E37A74" stroke-width="1" stroke-dasharray="4 4" opacity="0.6"/>
+                    <text x="510" y="84" font-size="11" fill="#E37A74" font-weight="300">Threshold</text>
+                    <line x1="40" y1="160" x2="500" y2="160" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                    <text x="260" y="178" text-anchor="middle" font-size="11" fill="#666" font-weight="300">→ Time</text>
+                    <path id="tradPath" d="M40,110" fill="none" stroke="#C2A35C" stroke-width="2" stroke-dasharray="4 2" stroke-linecap="round" opacity="0.7"/>
+                    <g filter="url(#softGlow)">
+                        <path id="cascPath" d="M40,90" fill="none" stroke="#6DCFF6" stroke-width="2.5" stroke-linecap="round"/>
+                    </g>
+                    <g clip-path="url(#clipAbove)" filter="url(#softGlow)">
+                        <path id="cascHiPath" d="M40,90" fill="none" stroke="#FFA6A6" stroke-width="5" stroke-linecap="round" opacity="0.35"/>
+                    </g>
+                    <text x="80" y="74" font-size="11" fill="#6DCFF6" font-weight="300">Executive Cascades™ — Sustained</text>
+                    <text x="240" y="136" font-size="11" fill="#C2A35C" font-weight="300">Traditional — Momentary</text>
+                </svg>
+            </div>
+            
+            <p class="caption">Single point of failure: Success depends on load selection AND execution both being optimal. P(success) ≈ 0 for untrained individuals.</p>
+        </div>
+    </section>
+
+    <!-- 03: THE SIGNAL -->
+    <section id="signal">
+        <div class="container">
+            <p class="eyebrow">Insight 03</p>
+            <h2>They Hide the Feedback Loop</h2>
+            <p class="subhead">Confusion is profitable. Clarity is free.</p>
+            
+            <p>Traditional fitness operates on a 14-day lag: workout → wait → check mirror → guess what worked.</p>
+            
+            <p class="mt-4">We found the signal: <strong>next-day soreness.</strong></p>
+            
+            <p class="mt-4">For beginners, soreness is a reliable binary indicator. Sore tomorrow = threshold crossed. Not sore = adjust immediately.</p>
+            
+            <div class="split mt-5">
+                <div class="split-card">
+                    <p class="split-label">Traditional</p>
+                    <p>14-day feedback loop<br>Check mirror, guess, adjust</p>
+                </div>
+                <div class="split-card highlight">
+                    <p class="split-label">XÆVIR</p>
+                    <p>24-hour feedback loop<br>Check soreness, know, adjust</p>
+                </div>
+            </div>
+            
+            <p class="mt-5" style="color: var(--text);">The black box becomes transparent.</p>
+        </div>
+    </section>
+
+    <!-- 04: THE EXPLOIT -->
+    <section id="exploit">
+        <div class="container">
+            <p class="eyebrow">Insight 04</p>
+            <h2>Your Muscle Can't Count Pounds</h2>
+            <p class="subhead">Light weight on fatigued fibers = heavy weight fresh.</p>
+            
+            <p><strong>The method:</strong> Work to the edge. Drop the weight 20-30%. Stay at the edge. Drop again.</p>
+            
+            <p class="mt-4">Pay the activation cost once. Stay in the room longer.</p>
+            
+            <div class="visual-medium">
+                <div class="threshold-viz-container">
+                    <button class="pause-btn" id="pauseBtn">Pause</button>
+                    
+                    <div class="viz-container">
+                        <svg width="100%" height="100%" viewBox="0 0 340 340">
+                            <defs>
+                                <radialGradient id="activeGlow" cx="50%" cy="50%" r="50%">
+                                    <stop id="glowStop1" offset="0%" stop-opacity="0.15" />
+                                    <stop id="glowStop2" offset="60%" stop-opacity="0.05" />
+                                    <stop id="glowStop3" offset="100%" stop-opacity="0" />
+                                </radialGradient>
+                            </defs>
+
+                            <circle id="glowCircle" class="glow-circle" cx="170" cy="170" r="126" fill="url(#activeGlow)" />
+                            <circle cx="170" cy="170" r="106" fill="none" stroke="#1a1a1a" stroke-width="8" />
+
+                            <g transform="rotate(-90 170 170)">
+                                <circle id="seg0" cx="170" cy="170" r="106" fill="none" stroke-width="8" stroke-linecap="round" 
+                                        stroke-dasharray="222 666" stroke-dashoffset="222" opacity="0.15" />
+                                <circle id="seg1" cx="170" cy="170" r="106" fill="none" stroke-width="8" stroke-linecap="round" 
+                                        stroke-dasharray="222 666" stroke-dashoffset="222" opacity="0.15" transform="rotate(120 170 170)" />
+                                <circle id="seg2" cx="170" cy="170" r="106" fill="none" stroke-width="8" stroke-linecap="round" 
+                                        stroke-dasharray="222 666" stroke-dashoffset="222" opacity="0.15" transform="rotate(240 170 170)" />
+                            </g>
+
+                            <text x="170" y="140" text-anchor="middle" font-size="13" fill="#64748b" font-weight="600" letter-spacing="2">
+                                SYSTEM STATE
+                            </text>
+                            
+                            <text id="stateText" class="center-text" x="170" y="182" text-anchor="middle" font-size="42" font-weight="900" />
+                            
+                            <text id="subText" x="170" y="206" text-anchor="middle" font-size="13" font-weight="500" />
+
+                            <circle id="dot0" cx="276" cy="170" r="9" stroke-width="2" />
+                            <text id="check0" x="276" y="171" text-anchor="middle" font-size="12" fill="#000" font-weight="900" opacity="0">✓</text>
+                            
+                            <circle id="dot1" cx="78" cy="262" r="9" stroke-width="2" />
+                            <text id="check1" x="78" y="263" text-anchor="middle" font-size="12" fill="#000" font-weight="900" opacity="0">✓</text>
+                            
+                            <circle id="dot2" cx="78" cy="78" r="9" stroke-width="2" />
+                            <text id="check2" x="78" y="79" text-anchor="middle" font-size="12" fill="#000" font-weight="900" opacity="0">✓</text>
+                        </svg>
+                    </div>
+
+                    <div class="checklist">
+                        <div class="checklist-header">Binary Growth Checklist</div>
+                        
+                        <div class="checklist-item" id="item0">
+                            <div class="check-circle" id="circle0"></div>
+                            <div class="check-content">
+                                <div class="check-question" id="question0"></div>
+                                <div class="check-status" id="status0"></div>
+                            </div>
+                            <div class="check-label" id="label0"></div>
+                        </div>
+                        
+                        <div class="checklist-item" id="item1">
+                            <div class="check-circle" id="circle1"></div>
+                            <div class="check-content">
+                                <div class="check-question" id="question1"></div>
+                                <div class="check-status" id="status1"></div>
+                            </div>
+                            <div class="check-label" id="label1"></div>
+                        </div>
+                        
+                        <div class="checklist-item" id="item2">
+                            <div class="check-circle" id="circle2"></div>
+                            <div class="check-content">
+                                <div class="check-question" id="question2"></div>
+                                <div class="check-status" id="status2"></div>
+                            </div>
+                            <div class="check-label" id="label2"></div>
+                        </div>
+                        
+                        <div class="result-box" id="resultBox"></div>
+                    </div>
+
+                    <div class="bottom-indicators">
+                        <div class="indicator" id="ind0">
+                            <span class="indicator-dot" id="indDot0"></span>
+                            <span>RECRUITING</span>
+                        </div>
+                        <div class="indicator" id="ind1">
+                            <span class="indicator-dot" id="indDot1"></span>
+                            <span>ACTIVE</span>
+                        </div>
+                        <div class="indicator" id="ind2">
+                            <span class="indicator-dot" id="indDot2"></span>
+                            <span>OPTIMAL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <p class="caption">Fatigue State Exploitation: A fatigued muscle lifting 60% of fresh maximum experiences equivalent motor unit recruitment to a fresh muscle lifting 85%.</p>
+        </div>
+    </section>
+
+    <!-- 05: THE PROOF -->
+    <section id="proof">
+        <div class="container">
+            <p class="eyebrow">Insight 05</p>
+            <h2>The Discovery: State Persists</h2>
+            <p class="subhead">The exploit was hiding in plain sight.</p>
+            
+            <p><strong>False assumption:</strong> Heavy weight ON → fibers recruited → weight OFF → state resets.</p>
+            
+            <p class="mt-4"><strong>The discovery:</strong> Recruitment state persists 30-60 seconds after load removal. Neural priming doesn't instantly reset.</p>
+            
+            <p class="mt-4"><strong>The exploit:</strong> Drop weight 20-30% while muscle is fatigued → it still experiences the load as "heavy" → stay at threshold without recovery valleys.</p>
+            
+            <div class="visual-medium">
+                <svg viewBox="0 0 960 260" style="width: 100%; height: auto;">
+                    <text x="64" y="64" fill="#666" font-size="13" font-weight="300">Stimulus</text>
+                    <text x="840" y="236" fill="#666" font-size="13" font-weight="300">Time →</text>
+                    <path d="M80,200 L460,80" fill="none" stroke="#6dcff6" stroke-width="2.5"/>
+                    <circle cx="460" cy="80" r="6" fill="#fdba74"/>
+                    <text x="472" y="78" fill="#999" font-size="13" font-weight="300">Failure (state achieved)</text>
+                    <path d="M460,80 V112" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <path d="M460,112 C520,112 600,112 660,112" fill="none" stroke="#6ee7b7" stroke-width="2.5"/>
+                    <text x="520" y="138" fill="#999" font-size="13" font-weight="300">Drop 1</text>
+                    <path d="M660,112 V144" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="1.5" stroke-dasharray="4 4"/>
+                    <path d="M660,144 C720,144 820,144 880,152" fill="none" stroke="#6ee7b7" stroke-width="2.5" opacity="0.7"/>
+                    <text x="720" y="170" fill="#999" font-size="13" font-weight="300">Drop 2</text>
+                </svg>
+            </div>
+            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Understanding</th>
+                        <th>Activation Cost</th>
+                        <th>Time at Threshold</th>
+                        <th>ROI</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Industry assumes state resets</td>
+                        <td>Pay 3× (3 sets)</td>
+                        <td>~6 seconds</td>
+                        <td>20%</td>
+                    </tr>
+                    <tr>
+                        <td>We know state persists</td>
+                        <td>Pay 1× (1 cascade)</td>
+                        <td>40+ seconds</td>
+                        <td class="highlight-cell">160%</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <p class="mt-5 text-center">Same muscle. Same fatigue. Different understanding.</p>
+        </div>
+    </section>
+
+    <!-- 06: THE CERTAINTY -->
+    <section id="certainty">
+        <div class="container">
+            <p class="eyebrow">Insight 06</p>
+            <h2>Hope vs Know</h2>
+            
+            <div class="split mt-5">
+                <div class="split-card">
+                    <p class="split-label">Traditional: Hope You Did Enough</p>
+                    <p style="font-size: 14px; line-height: 1.9;">
+                        Three brief spikes separated by rest<br>
+                        Wait weeks to see if it worked<br>
+                        Requires perfect weight selection<br>
+                        No redundancy<br>
+                        No feedback until weeks later
+                    </p>
+                </div>
+                <div class="split-card highlight">
+                    <p class="split-label">XÆVIR: Know You Did Enough</p>
+                    <p style="font-size: 14px; line-height: 1.9;">
+                        Sustained time in growth zone<br>
+                        Feedback tomorrow (soreness)<br>
+                        Multiple pathways to success<br>
+                        Redundancy built in<br>
+                        24-hour validation
+                    </p>
+                </div>
+            </div>
+            
+            <div style="margin-top: var(--s5); padding: var(--s4); border: 1px solid var(--border); border-radius: 4px;">
+                <p style="font-size: 13px; font-weight: 400; margin-bottom: var(--s3); letter-spacing: 0.05em;">Four Principles</p>
+                <p style="font-size: 14px; line-height: 1.9;">
+                    <strong>01: Identify the Threshold</strong> — Growth is binary. Cross it or don't.<br>
+                    <strong>02: Engineer Time at Threshold</strong> — Make staying there inevitable.<br>
+                    <strong>03: Build Redundancy</strong> — Safety nets guarantee success.<br>
+                    <strong>04: Validate Fast</strong> — Know tomorrow, not in three weeks.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- 07: CLOSE -->
+    <section id="close" style="border-bottom: none;">
+        <div class="container text-center">
+            <h2 style="font-weight: 300; margin-bottom: var(--s4);">The Industry Optimizes Effort.</h2>
+            <p style="font-size: 22px; color: var(--accent); margin-bottom: var(--s5);">We optimize signal density.</p>
+            <p style="color: var(--text-dim); font-size: 16px;">Precision in the gym creates freedom from the gym.<br>When every second counts, you need fewer seconds.</p>
+        </div>
+    </section>
+
+    <!-- THRESHOLD VISUALIZATION SCRIPT -->
+    <script>
+        const stages = [
+            {
+                title: 'RECRUITING',
+                sub: 'Motor units activating',
+                check: 'Am I under tension?',
+                ringColor: '#6dcff6',
+                glowColor: '#6dcff6',
+                textColor: '#6dcff6'
+            },
+            {
+                title: 'ACTIVE',
+                sub: 'All fibers firing',
+                check: 'Are all my fibers firing?',
+                ringColor: '#6dcff6',
+                glowColor: '#6dcff6',
+                textColor: '#6dcff6'
+            },
+            {
+                title: 'OPTIMAL',
+                sub: 'Fatigue accumulating',
+                check: 'Is fatigue building?',
+                ringColor: '#6dcff6',
+                glowColor: '#6dcff6',
+                textColor: '#6dcff6'
+            }
+        ];
+
+        let currentStage = 0;
+        let isPlaying = true;
+        let interval;
+
+        function updateStage(stage) {
+            currentStage = stage;
+            const stageData = stages[stage];
+
+            // Update glow colors
+            document.getElementById('glowStop1').setAttribute('stop-color', stageData.glowColor);
+            document.getElementById('glowStop2').setAttribute('stop-color', stageData.glowColor);
+            document.getElementById('glowStop3').setAttribute('stop-color', stageData.glowColor);
+
+            // Update center text
+            const stateText = document.getElementById('stateText');
+            stateText.textContent = stageData.title;
+            stateText.setAttribute('fill', stageData.ringColor);
+            stateText.style.filter = `drop-shadow(0 0 12px ${stageData.glowColor})`;
+
+            document.getElementById('subText').textContent = stageData.sub;
+            document.getElementById('subText').setAttribute('fill', stageData.textColor);
+
+            // Update segments
+            for (let i = 0; i < 3; i++) {
+                const seg = document.getElementById(`seg${i}`);
+                const segColor = i === stage ? stageData.ringColor : '#334155';
+                seg.setAttribute('stroke', segColor);
+                
+                if (i < stage) {
+                    seg.setAttribute('opacity', '0.3');
+                    seg.style.filter = 'none';
+                    seg.setAttribute('stroke-dashoffset', '0');
+                } else if (i === stage) {
+                    seg.setAttribute('opacity', '1');
+                    seg.style.filter = 'brightness(1.2) drop-shadow(0 0 8px currentColor)';
+                    if (isPlaying) {
+                        seg.style.animation = 'reveal 1400ms ease-out forwards';
+                    }
+                } else {
+                    seg.setAttribute('opacity', '0.15');
+                    seg.setAttribute('stroke-dashoffset', '222');
+                }
+            }
+
+            // Update dots
+            for (let i = 0; i < 3; i++) {
+                const dot = document.getElementById(`dot${i}`);
+                const check = document.getElementById(`check${i}`);
+                const isPast = i <= stage;
+                
+                if (isPast) {
+                    const dotColor = i === stage ? stageData.ringColor : '#475569';
+                    const glowColor = i === stage ? stageData.glowColor : '#64748b';
+                    dot.setAttribute('fill', dotColor);
+                    dot.setAttribute('stroke', glowColor);
+                    check.setAttribute('opacity', '1');
+                    
+                    if (i === stage && isPlaying) {
+                        dot.classList.add('checkpoint-pulse');
+                    } else {
+                        dot.classList.remove('checkpoint-pulse');
+                    }
+                } else {
+                    dot.setAttribute('fill', '#334155');
+                    dot.setAttribute('stroke', '#1e293b');
+                    check.setAttribute('opacity', '0');
+                    dot.classList.remove('checkpoint-pulse');
+                }
+            }
+
+            // Update checklist
+            for (let i = 0; i < 3; i++) {
+                const item = document.getElementById(`item${i}`);
+                const circle = document.getElementById(`circle${i}`);
+                const question = document.getElementById(`question${i}`);
+                const status = document.getElementById(`status${i}`);
+                const label = document.getElementById(`label${i}`);
+                
+                const itemData = stages[i];
+                const isActive = stage === i;
+                const isPast = stage > i;
+                const isFuture = stage < i;
+                
+                item.style.opacity = isFuture ? '0.4' : '1';
+                
+                question.textContent = itemData.check;
+                label.textContent = itemData.title;
+                
+                if (isPast || isActive) {
+                    const dotColor = isActive ? itemData.ringColor : '#64748b';
+                    const glowColor = isActive ? itemData.glowColor : '#94a3b8';
+                    circle.style.background = dotColor;
+                    circle.style.border = `2px solid ${glowColor}`;
+                    circle.textContent = '✓';
+                    question.style.color = isActive ? itemData.ringColor : '#64748b';
+                    label.style.color = isActive ? itemData.ringColor : '#64748b';
+                    
+                    if (isActive && isPlaying) {
+                        circle.classList.add('active');
+                    } else {
+                        circle.classList.remove('active');
+                    }
+                } else {
+                    circle.style.background = '#1e293b';
+                    circle.style.border = '2px solid #334155';
+                    circle.textContent = '';
+                    question.style.color = '#475569';
+                    label.style.color = '#334155';
+                    circle.classList.remove('active');
+                }
+                
+                if (isPast) status.textContent = '✓ Complete';
+                else if (isActive) status.textContent = '← Checking now';
+                else status.textContent = 'Waiting...';
+            }
+
+            // Update result box
+            const resultBox = document.getElementById('resultBox');
+            if (stage === 2) {
+                resultBox.style.background = 'rgba(109, 207, 246, 0.08)';
+                resultBox.style.border = '1px solid rgba(109, 207, 246, 0.2)';
+                resultBox.style.color = '#6dcff6';
+                resultBox.textContent = '✓ All conditions met → Growth signal active';
+            } else {
+                resultBox.style.background = 'rgba(255,255,255,0.02)';
+                resultBox.style.border = '1px solid rgba(255,255,255,0.05)';
+                resultBox.style.color = '#64748b';
+                resultBox.textContent = 'If yes to all → adapt. If no → nothing happens.';
+            }
+
+            // Update bottom indicators
+            for (let i = 0; i < 3; i++) {
+                const ind = document.getElementById(`ind${i}`);
+                const dot = document.getElementById(`indDot${i}`);
+                
+                ind.style.opacity = i === stage ? '1' : '0.5';
+                dot.style.background = i === stage ? stageData.ringColor : '#334155';
+                
+                if (i === stage && isPlaying) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            }
+        }
+
+        function nextStage() {
+            updateStage((currentStage + 1) % 3);
+        }
+
+        function startAnimation() {
+            interval = setInterval(nextStage, 2500);
+        }
+
+        function stopAnimation() {
+            clearInterval(interval);
+        }
+
+        document.getElementById('pauseBtn').addEventListener('click', function() {
+            isPlaying = !isPlaying;
+            this.textContent = isPlaying ? 'Pause' : 'Play';
+            
+            if (isPlaying) {
+                startAnimation();
+            } else {
+                stopAnimation();
+            }
+            
+            updateStage(currentStage);
+        });
+
+        // Initialize
+        updateStage(0);
+        startAnimation();
+    </script>
+
+    <!-- WAVE ANIMATION SCRIPT -->
+    <script>
+        const tradPath = document.getElementById('tradPath');
+        const cascPath = document.getElementById('cascPath');
+        const cascHiPath = document.getElementById('cascHiPath');
+        
+        if (tradPath && cascPath && cascHiPath) {
+            let t = 0;
+            const segs = 60;
+            const xStart = 40;
+            const xEnd = 500;
+            const dx = (xEnd - xStart) / segs;
+
+            function waveYVar(base, ampBase, ampPeak, x, phase, freq, peakX, sigma) {
+                const env = ampBase + ampPeak * Math.exp(-Math.pow(x - peakX, 2) / sigma);
+                return base + env * Math.sin(x * freq + phase);
+            }
+
+            function pathForCascade(base, amp, freq, phase) {
+                let d = `M${xStart},${base}`;
+                for (let i = 1; i <= segs; i++) {
+                    const x = xStart + dx * i;
+                    const xm = xStart + dx * (i - 0.5);
+                    const yCtl = base + amp * Math.sin(xm * freq + phase);
+                    const y = base + amp * Math.sin(x * freq + phase);
+                    d += ` Q${xm},${yCtl} ${x},${y}`;
+                }
+                return d;
+            }
+
+            function pathForTraditional(base, ampBase, ampPeak, freq, phase, peakX, sigma) {
+                let d = `M${xStart},${base}`;
+                for (let i = 1; i <= segs; i++) {
+                    const x = xStart + dx * i;
+                    const xm = xStart + dx * (i - 0.5);
+                    const yCtl = waveYVar(base, ampBase, ampPeak, xm, phase, freq, peakX, sigma);
+                    const y = waveYVar(base, ampBase, ampPeak, x, phase, freq, peakX, sigma);
+                    d += ` Q${xm},${yCtl} ${x},${y}`;
+                }
+                return d;
+            }
+
+            function animate() {
+                t += 0.012;
+                const dTrad = pathForTraditional(110, 7, 18, 0.02, t * 0.72 + 0.8, (xStart + xEnd) / 2, 12000);
+                const dCasc = pathForCascade(88, 10, 0.02, t * 0.98);
+                tradPath.setAttribute('d', dTrad);
+                cascPath.setAttribute('d', dCasc);
+                cascHiPath.setAttribute('d', dCasc);
+                requestAnimationFrame(animate);
+            }
+
+            animate();
+        }
+    </script>
+
+</body>
+</html>
