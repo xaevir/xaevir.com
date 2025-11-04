@@ -246,6 +246,7 @@
 
       .glow-circle {
         animation: glowPulse 2s ease-in-out infinite;
+        transition: all 800ms ease;
       }
 
       .center-text {
@@ -277,6 +278,7 @@
         align-items: center;
         gap: 12px;
         padding: 12px 0;
+        transition: all 400ms ease;
       }
 
       .checklist-item:not(:last-child) {
@@ -294,6 +296,7 @@
         font-weight: 900;
         color: #000;
         flex-shrink: 0;
+        transition: all 400ms ease;
       }
 
       .check-circle.active {
@@ -308,17 +311,20 @@
         font-size: 15px;
         font-weight: 600;
         margin-bottom: 2px;
+        transition: color 400ms ease;
       }
 
       .check-status {
         font-size: 12px;
         color: #64748b;
+        transition: all 400ms ease;
       }
 
       .check-label {
         font-size: 13px;
         font-weight: 700;
         letter-spacing: 1px;
+        transition: color 400ms ease;
       }
 
       .result-box {
@@ -328,6 +334,37 @@
         font-size: 13px;
         text-align: center;
         font-weight: 500;
+        transition: all 400ms ease;
+      }
+
+      .bottom-indicators {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 32px;
+        font-size: 11px;
+        color: #64748b;
+        font-weight: 600;
+        letter-spacing: 1px;
+      }
+
+      .indicator {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: opacity 400ms ease;
+      }
+
+      .indicator-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        transition: all 400ms ease;
+      }
+
+      .indicator-dot.active {
+        animation: glowPulse 2s ease-in-out infinite;
       }
 
       /* Wave Visualization */
@@ -769,13 +806,14 @@
           Just: <span class="emphasis">Did you cross the threshold?</span>
         </p>
 
+        <!-- ANIMATED COMPONENT 1: THRESHOLD VISUALIZATION (UPDATED) -->
         <div class="threshold-viz">
           <div class="viz-container">
             <svg width="100%" height="100%" viewBox="0 0 340 340">
               <defs>
                 <radialGradient id="activeGlow" cx="50%" cy="50%" r="50%">
-                  <stop id="glowStop1" offset="0%" stop-opacity="0.3" />
-                  <stop id="glowStop2" offset="60%" stop-opacity="0.1" />
+                  <stop id="glowStop1" offset="0%" stop-opacity="0.15" />
+                  <stop id="glowStop2" offset="60%" stop-opacity="0.05" />
                   <stop id="glowStop3" offset="100%" stop-opacity="0" />
                 </radialGradient>
               </defs>
@@ -794,7 +832,7 @@
                 r="106"
                 fill="none"
                 stroke="#1a1a1a"
-                stroke-width="12"
+                stroke-width="8"
               />
 
               <g transform="rotate(-90 170 170)">
@@ -804,7 +842,7 @@
                   cy="170"
                   r="106"
                   fill="none"
-                  stroke-width="12"
+                  stroke-width="8"
                   stroke-linecap="round"
                   stroke-dasharray="222 666"
                   stroke-dashoffset="222"
@@ -816,7 +854,7 @@
                   cy="170"
                   r="106"
                   fill="none"
-                  stroke-width="12"
+                  stroke-width="8"
                   stroke-linecap="round"
                   stroke-dasharray="222 666"
                   stroke-dashoffset="222"
@@ -829,7 +867,7 @@
                   cy="170"
                   r="106"
                   fill="none"
-                  stroke-width="12"
+                  stroke-width="8"
                   stroke-linecap="round"
                   stroke-dasharray="222 666"
                   stroke-dashoffset="222"
@@ -849,139 +887,119 @@
               >
                 SYSTEM STATE
               </text>
+
               <text
                 id="stateText"
                 class="center-text"
                 x="170"
-                y="175"
+                y="182"
                 text-anchor="middle"
-                font-size="32"
-                fill="#3b82f6"
-                font-weight="700"
-              >
-                RECRUITING
-              </text>
+                font-size="42"
+                font-weight="900"
+              />
+
               <text
                 id="subText"
                 x="170"
-                y="197"
+                y="206"
+                text-anchor="middle"
+                font-size="13"
+                font-weight="500"
+              />
+
+              <circle id="dot0" cx="276" cy="170" r="9" stroke-width="2" />
+              <text
+                id="check0"
+                x="276"
+                y="171"
                 text-anchor="middle"
                 font-size="12"
-                fill="#bfdbfe"
+                fill="#000"
+                font-weight="900"
+                opacity="0"
               >
-                Motor units activating
+                ✓
               </text>
 
-              <g id="dot0" transform="rotate(-90 170 170)">
-                <circle
-                  cx="170"
-                  cy="64"
-                  r="7"
-                  fill="#3b82f6"
-                  stroke="#60a5fa"
-                  stroke-width="2"
-                />
-                <text
-                  id="check0"
-                  x="170"
-                  y="69"
-                  text-anchor="middle"
-                  font-size="10"
-                  fill="#000"
-                  font-weight="900"
-                  opacity="1"
-                >
-                  ✓
-                </text>
-              </g>
-              <g id="dot1" transform="rotate(-90 170 170) rotate(120 170 170)">
-                <circle
-                  cx="170"
-                  cy="64"
-                  r="7"
-                  fill="#334155"
-                  stroke="#1e293b"
-                  stroke-width="2"
-                />
-                <text
-                  id="check1"
-                  x="170"
-                  y="69"
-                  text-anchor="middle"
-                  font-size="10"
-                  fill="#000"
-                  font-weight="900"
-                  opacity="0"
-                >
-                  ✓
-                </text>
-              </g>
-              <g id="dot2" transform="rotate(-90 170 170) rotate(240 170 170)">
-                <circle
-                  cx="170"
-                  cy="64"
-                  r="7"
-                  fill="#334155"
-                  stroke="#1e293b"
-                  stroke-width="2"
-                />
-                <text
-                  id="check2"
-                  x="170"
-                  y="69"
-                  text-anchor="middle"
-                  font-size="10"
-                  fill="#000"
-                  font-weight="900"
-                  opacity="0"
-                >
-                  ✓
-                </text>
-              </g>
+              <circle id="dot1" cx="78" cy="262" r="9" stroke-width="2" />
+              <text
+                id="check1"
+                x="78"
+                y="263"
+                text-anchor="middle"
+                font-size="12"
+                fill="#000"
+                font-weight="900"
+                opacity="0"
+              >
+                ✓
+              </text>
+
+              <circle id="dot2" cx="78" cy="78" r="9" stroke-width="2" />
+              <text
+                id="check2"
+                x="78"
+                y="79"
+                text-anchor="middle"
+                font-size="12"
+                fill="#000"
+                font-weight="900"
+                opacity="0"
+              >
+                ✓
+              </text>
             </svg>
           </div>
 
           <div class="checklist">
-            <div class="checklist-header">MUSCLE'S GROWTH CHECKLIST</div>
+            <div class="checklist-header">BINARY GROWTH CHECKLIST</div>
 
             <div class="checklist-item" id="item0">
               <div class="check-circle" id="circle0"></div>
               <div class="check-content">
-                <div class="check-question" id="question0">
-                  Am I under tension?
-                </div>
-                <div class="check-status" id="status0">✓ Complete</div>
-                <div class="check-label" id="label0">RECRUITING</div>
+                <div class="check-question" id="question0"></div>
+                <div class="check-status" id="status0"></div>
               </div>
+              <div class="check-label" id="label0"></div>
             </div>
 
             <div class="checklist-item" id="item1">
               <div class="check-circle" id="circle1"></div>
               <div class="check-content">
-                <div class="check-question" id="question1">
-                  Are all my fibers firing?
-                </div>
-                <div class="check-status" id="status1">Waiting...</div>
-                <div class="check-label" id="label1">ACTIVE</div>
+                <div class="check-question" id="question1"></div>
+                <div class="check-status" id="status1"></div>
               </div>
+              <div class="check-label" id="label1"></div>
             </div>
 
             <div class="checklist-item" id="item2">
               <div class="check-circle" id="circle2"></div>
               <div class="check-content">
-                <div class="check-question" id="question2">
-                  Is fatigue building?
-                </div>
-                <div class="check-status" id="status2">Waiting...</div>
-                <div class="check-label" id="label2">OPTIMAL</div>
+                <div class="check-question" id="question2"></div>
+                <div class="check-status" id="status2"></div>
               </div>
+              <div class="check-label" id="label2"></div>
             </div>
 
-            <div class="result-box" id="resultBox">
-              If yes to all → adapt. If no → nothing happens.
+            <div class="result-box" id="resultBox"></div>
+          </div>
+
+          <div class="bottom-indicators">
+            <div class="indicator" id="ind0">
+              <span class="indicator-dot" id="indDot0"></span>
+              <span>RECRUITING</span>
+            </div>
+            <div class="indicator" id="ind1">
+              <span class="indicator-dot" id="indDot1"></span>
+              <span>ACTIVE</span>
+            </div>
+            <div class="indicator" id="ind2">
+              <span class="indicator-dot" id="indDot2"></span>
+              <span>OPTIMAL</span>
             </div>
           </div>
         </div>
+        <!-- END ANIMATED COMPONENT 1 -->
 
         <div class="density-box">
           <div class="density-label">THE TRUTH</div>
@@ -1002,7 +1020,7 @@
           </div>
         </div>
 
-        <!-- Animated Wave Visual -->
+        <!-- ANIMATED COMPONENT 2: WAVE VISUALIZATION -->
         <div class="wave-viz">
           <h3 class="wave-title">Ride The Threshold. Don't Touch It.</h3>
           <svg
@@ -1130,6 +1148,7 @@
             time in the growth zone.
           </p>
         </div>
+        <!-- END ANIMATED COMPONENT 2 -->
       </div>
     </section>
 
@@ -1583,86 +1602,108 @@
       </div>
     </section>
 
-    <!-- Threshold Animation Script - Progressive Loading -->
+    <!-- Threshold Animation Script - Continuous Worm Effect -->
     <script>
       const stages = [
         {
           title: "RECRUITING",
           sub: "Motor units activating",
           check: "Am I under tension?",
-          ringColor: "#3b82f6",
-          glowColor: "#60a5fa",
-          textColor: "#bfdbfe",
+          ringColor: "#6dcff6",
+          glowColor: "#6dcff6",
+          textColor: "#6dcff6",
         },
         {
           title: "ACTIVE",
           sub: "All fibers firing",
           check: "Are all my fibers firing?",
-          ringColor: "#3b82f6",
-          glowColor: "#60a5fa",
-          textColor: "#bfdbfe",
+          ringColor: "#6dcff6",
+          glowColor: "#6dcff6",
+          textColor: "#6dcff6",
         },
         {
           title: "OPTIMAL",
           sub: "Fatigue accumulating",
           check: "Is fatigue building?",
-          ringColor: "#3b82f6",
-          glowColor: "#60a5fa",
-          textColor: "#bfdbfe",
+          ringColor: "#6dcff6",
+          glowColor: "#6dcff6",
+          textColor: "#6dcff6",
         },
       ];
 
       let startTime = Date.now();
-      const cycleDuration = 8000; // 8 seconds total cycle
-      const growDuration = 6000; // 6 seconds growing, 2 seconds dark
+      const cycleDuration = 6000; // 6 seconds total cycle
       const circumference = 2 * Math.PI * 106;
+      const segmentLength = circumference / 3; // Each segment is 1/3 of circle
 
-      function animate() {
+      function animateThreshold() {
         const elapsed = Date.now() - startTime;
         const cycleProgress = (elapsed % cycleDuration) / cycleDuration;
 
-        // 0-0.75 = growing phase, 0.75-1.0 = dark/reset phase
+        // Continuous growth from 0 to 1, then quick fade
         let fillPercent;
-        if (cycleProgress < 0.75) {
-          fillPercent = cycleProgress / 0.75; // 0 to 1 over 6 seconds
+        if (cycleProgress < 0.85) {
+          // Growing phase: 0 to 85% of cycle (5.1 seconds)
+          fillPercent = cycleProgress / 0.85;
         } else {
-          fillPercent = 0; // Dark phase
+          // Quick fade out: 85% to 100% of cycle (0.9 seconds)
+          const fadeProgress = (cycleProgress - 0.85) / 0.15;
+          fillPercent = Math.max(0, 1 - fadeProgress * 2); // Fade from 1 to 0
         }
 
-        // Which stage are we currently in?
+        // Calculate which stage we're in based on fill percentage
         let currentStage = -1;
-        if (fillPercent > 0.66) currentStage = 2;
-        else if (fillPercent > 0.33) currentStage = 1;
-        else if (fillPercent > 0) currentStage = 0;
 
-        // Update the circle segments
-        const totalFill = circumference * fillPercent;
+        if (fillPercent > 0.66) {
+          currentStage = 2;
+        } else if (fillPercent > 0.33) {
+          currentStage = 1;
+        } else if (fillPercent > 0) {
+          currentStage = 0;
+        }
 
+        // Calculate total fill length (this is the "worm" length)
+        const totalFillLength = circumference * fillPercent;
+
+        // Update each segment - the "worm" effect
         for (let i = 0; i < 3; i++) {
           const seg = document.getElementById(`seg${i}`);
-          const segStart = (i / 3) * circumference;
-          const segEnd = ((i + 1) / 3) * circumference;
+          const segStart = i * segmentLength;
+          const segEnd = (i + 1) * segmentLength;
 
-          if (totalFill < segStart) {
-            // Haven't reached this segment yet
+          // Calculate how much of this segment is filled
+          const segmentFill = Math.max(
+            0,
+            Math.min(segmentLength, totalFillLength - segStart)
+          );
+          const segmentProgress = segmentFill / segmentLength;
+
+          if (totalFillLength < segStart) {
+            // Worm hasn't reached this segment yet - dark
             seg.setAttribute("opacity", "0.15");
             seg.setAttribute("stroke", "#334155");
             seg.style.filter = "none";
-          } else if (totalFill >= segEnd) {
-            // Segment fully complete
+            seg.setAttribute("stroke-dashoffset", "222");
+          } else if (totalFillLength >= segEnd) {
+            // Worm has completely filled this segment - lit but not glowing
             seg.setAttribute("opacity", "0.5");
             seg.setAttribute("stroke", stages[i].ringColor);
             seg.style.filter = "none";
+            seg.setAttribute("stroke-dashoffset", "0");
           } else {
-            // Currently filling this segment
+            // Worm is currently growing through this segment - bright and glowing
             seg.setAttribute("opacity", "1");
             seg.setAttribute("stroke", stages[i].ringColor);
             seg.style.filter =
-              "brightness(1.2) drop-shadow(0 0 8px currentColor)";
+              "brightness(1.4) drop-shadow(0 0 12px currentColor)";
+
+            // Animate the dash offset to create growing effect
+            const offset = 222 * (1 - segmentProgress);
+            seg.setAttribute("stroke-dashoffset", offset);
           }
         }
 
-        // Update text, checklist, and dots
+        // Update center text and glow based on current stage
         if (currentStage >= 0) {
           const stageData = stages[currentStage];
 
@@ -1687,102 +1728,120 @@
           document
             .getElementById("subText")
             .setAttribute("fill", stageData.textColor);
+        } else {
+          // During fade, dim the text
+          const stateText = document.getElementById("stateText");
+          stateText.textContent = "";
+          document.getElementById("subText").textContent = "";
+        }
 
-          // Update checkpoint dots
-          for (let i = 0; i < 3; i++) {
-            const dotGroup = document.getElementById(`dot${i}`);
-            const dot = dotGroup.querySelector("circle");
-            const check = document.getElementById(`check${i}`);
-            const isLit = i <= currentStage;
+        // Update checkpoint dots - light up progressively
+        for (let i = 0; i < 3; i++) {
+          const dot = document.getElementById(`dot${i}`);
+          const check = document.getElementById(`check${i}`);
+          const isLit = i <= currentStage && currentStage >= 0;
+          const isCurrent = i === currentStage;
 
-            if (isLit) {
-              const dotColor =
-                i === currentStage ? stageData.ringColor : "#475569";
-              const glowColor =
-                i === currentStage ? stageData.glowColor : "#64748b";
-              dot.setAttribute("fill", dotColor);
-              dot.setAttribute("stroke", glowColor);
-              check.setAttribute("opacity", "1");
+          if (isLit) {
+            const dotColor = isCurrent ? stages[i].ringColor : "#475569";
+            const glowColor = isCurrent ? stages[i].glowColor : "#64748b";
+            dot.setAttribute("fill", dotColor);
+            dot.setAttribute("stroke", glowColor);
+            check.setAttribute("opacity", "1");
 
-              if (i === currentStage) {
-                dotGroup.classList.add("checkpoint-pulse");
-              } else {
-                dotGroup.classList.remove("checkpoint-pulse");
-              }
+            if (isCurrent) {
+              dot.classList.add("checkpoint-pulse");
             } else {
-              dot.setAttribute("fill", "#334155");
-              dot.setAttribute("stroke", "#1e293b");
-              check.setAttribute("opacity", "0");
-              dotGroup.classList.remove("checkpoint-pulse");
+              dot.classList.remove("checkpoint-pulse");
             }
-          }
-
-          // Update checklist items
-          for (let i = 0; i < 3; i++) {
-            const item = document.getElementById(`item${i}`);
-            const circle = document.getElementById(`circle${i}`);
-            const question = document.getElementById(`question${i}`);
-            const status = document.getElementById(`status${i}`);
-            const label = document.getElementById(`label${i}`);
-
-            const itemData = stages[i];
-            const isLit = i <= currentStage;
-            const isCurrent = i === currentStage;
-
-            item.style.opacity = isLit ? "1" : "0.4";
-            question.textContent = itemData.check;
-            label.textContent = itemData.title;
-
-            if (isLit) {
-              const dotColor = isCurrent ? itemData.ringColor : "#64748b";
-              const glowColor = isCurrent ? itemData.glowColor : "#94a3b8";
-              circle.style.background = dotColor;
-              circle.style.border = `2px solid ${glowColor}`;
-              circle.textContent = "✓";
-              question.style.color = isCurrent ? itemData.ringColor : "#64748b";
-              label.style.color = isCurrent ? itemData.ringColor : "#64748b";
-
-              if (isCurrent) {
-                circle.classList.add("active");
-              } else {
-                circle.classList.remove("active");
-              }
-
-              status.textContent =
-                i < currentStage ? "✓ Complete" : "← Checking now";
-            } else {
-              circle.style.background = "#1e293b";
-              circle.style.border = "2px solid #334155";
-              circle.textContent = "";
-              question.style.color = "#475569";
-              label.style.color = "#334155";
-              circle.classList.remove("active");
-              status.textContent = "Waiting...";
-            }
-          }
-
-          // Update result box
-          const resultBox = document.getElementById("resultBox");
-          if (currentStage === 2) {
-            resultBox.style.background = "rgba(59, 130, 246, 0.08)";
-            resultBox.style.border = "1px solid rgba(59, 130, 246, 0.2)";
-            resultBox.style.color = "#93c5fd";
-            resultBox.textContent =
-              "✓ All conditions met → Growth signal active";
           } else {
-            resultBox.style.background = "rgba(255,255,255,0.02)";
-            resultBox.style.border = "1px solid rgba(255,255,255,0.05)";
-            resultBox.style.color = "#64748b";
-            resultBox.textContent =
-              "If yes to all → adapt. If no → nothing happens.";
+            dot.setAttribute("fill", "#334155");
+            dot.setAttribute("stroke", "#1e293b");
+            check.setAttribute("opacity", "0");
+            dot.classList.remove("checkpoint-pulse");
           }
         }
 
-        requestAnimationFrame(animate);
+        // Update checklist items - light up progressively
+        for (let i = 0; i < 3; i++) {
+          const item = document.getElementById(`item${i}`);
+          const circle = document.getElementById(`circle${i}`);
+          const question = document.getElementById(`question${i}`);
+          const status = document.getElementById(`status${i}`);
+          const label = document.getElementById(`label${i}`);
+
+          const itemData = stages[i];
+          const isLit = i <= currentStage && currentStage >= 0;
+          const isCurrent = i === currentStage;
+
+          // Smooth opacity transition
+          item.style.opacity = isLit ? "1" : "0.3";
+          question.textContent = itemData.check;
+          label.textContent = itemData.title;
+
+          if (isLit) {
+            const dotColor = isCurrent ? itemData.ringColor : "#64748b";
+            const glowColor = isCurrent ? itemData.glowColor : "#94a3b8";
+            circle.style.background = dotColor;
+            circle.style.border = `2px solid ${glowColor}`;
+            circle.textContent = "✓";
+            question.style.color = isCurrent ? itemData.ringColor : "#64748b";
+            label.style.color = isCurrent ? itemData.ringColor : "#64748b";
+
+            if (isCurrent) {
+              circle.classList.add("active");
+              status.textContent = "← Active now";
+            } else {
+              circle.classList.remove("active");
+              status.textContent = "✓ Complete";
+            }
+          } else {
+            circle.style.background = "#1e293b";
+            circle.style.border = "2px solid #334155";
+            circle.textContent = "";
+            question.style.color = "#475569";
+            label.style.color = "#334155";
+            circle.classList.remove("active");
+            status.textContent = "Waiting...";
+          }
+        }
+
+        // Update result box - only light up when all 3 are complete
+        const resultBox = document.getElementById("resultBox");
+        if (currentStage === 2 && fillPercent > 0.95) {
+          resultBox.style.background = "rgba(109, 207, 246, 0.08)";
+          resultBox.style.border = "1px solid rgba(109, 207, 246, 0.2)";
+          resultBox.style.color = "#6dcff6";
+          resultBox.textContent = "✓ All conditions met → Growth signal active";
+        } else {
+          resultBox.style.background = "rgba(255,255,255,0.02)";
+          resultBox.style.border = "1px solid rgba(255,255,255,0.05)";
+          resultBox.style.color = "#64748b";
+          resultBox.textContent =
+            "If yes to all → adapt. If no → nothing happens.";
+        }
+
+        // Update bottom indicators
+        for (let i = 0; i < 3; i++) {
+          const ind = document.getElementById(`ind${i}`);
+          const dot = document.getElementById(`indDot${i}`);
+
+          const isActive = i === currentStage && currentStage >= 0;
+          ind.style.opacity = isActive ? "1" : "0.5";
+          dot.style.background = isActive ? stages[i].ringColor : "#334155";
+
+          if (isActive) {
+            dot.classList.add("active");
+          } else {
+            dot.classList.remove("active");
+          }
+        }
+
+        requestAnimationFrame(animateThreshold);
       }
 
       // Start animation
-      animate();
+      animateThreshold();
     </script>
 
     <!-- Wave Animation Script -->
@@ -1863,7 +1922,7 @@
           return d;
         }
 
-        function animate() {
+        function animateWave() {
           t += 0.012;
           const dTrad = pathForTraditional(
             110,
@@ -1878,10 +1937,10 @@
           tradPath.setAttribute("d", dTrad);
           cascPath.setAttribute("d", dCasc);
           cascHiPath.setAttribute("d", dCasc);
-          requestAnimationFrame(animate);
+          requestAnimationFrame(animateWave);
         }
 
-        animate();
+        animateWave();
       }
     </script>
   </body>
